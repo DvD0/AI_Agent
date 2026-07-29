@@ -1,0 +1,9 @@
+services:
+  dev-agent:
+    build: .
+    container_name: tg-dev-agent
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
