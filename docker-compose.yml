@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: unless-stopped
+    volumes:
+      - ollama_data:/root/.ollama
+    # На 4 ГБ RAM без GPU держим модель маленькой (см. .env.example)
+    deploy:
+      resources:
+        limits:
+          memory: 3g
+
+  bot:
+    build: .
+    container_name: dev-agent-bot
+    restart: unless-stopped
+    depends_on:
+      - ollama
+    env_file: .env
+    volumes:
+      - ./data:/app/data
+
+volumes:
+  ollama_data:
